@@ -15,6 +15,7 @@ package io.prestosql.tests.tpch;
 
 import io.prestosql.Session;
 import io.prestosql.plugin.tpch.TpchPlugin;
+import io.prestosql.tests.AbstractTestIndexedQueries;
 import io.prestosql.tests.DistributedQueryRunner;
 
 import java.util.function.Function;
@@ -52,7 +53,7 @@ public final class TpchQueryRunnerBuilder
     {
         DistributedQueryRunner queryRunner = buildWithoutCatalogs();
         try {
-            queryRunner.createCatalog("tpch", "tpch");
+            queryRunner.createCatalog("tpch", "tpch_indexed");
             return queryRunner;
         }
         catch (Exception e) {
@@ -66,7 +67,7 @@ public final class TpchQueryRunnerBuilder
     {
         DistributedQueryRunner queryRunner = super.build();
         try {
-            queryRunner.installPlugin(new TpchPlugin());
+            queryRunner.installPlugin(new IndexedTpchPlugin(AbstractTestIndexedQueries.INDEX_SPEC));
             return queryRunner;
         }
         catch (Exception e) {
