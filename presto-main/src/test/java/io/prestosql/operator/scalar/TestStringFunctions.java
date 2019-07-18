@@ -37,6 +37,7 @@ import static io.prestosql.spi.type.CharType.createCharType;
 import static io.prestosql.spi.type.IntegerType.INTEGER;
 import static io.prestosql.spi.type.VarbinaryType.VARBINARY;
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 import static io.prestosql.sql.analyzer.SemanticErrorCode.FUNCTION_NOT_FOUND;
@@ -233,8 +234,8 @@ public class TestStringFunctions
         assertFunction("REPLACE('foo', 'foo', '')", createVarcharType(3), "");
         assertFunction("REPLACE('abc', '', 'xx')", createVarcharType(11), "xxaxxbxxcxx");
         assertFunction("REPLACE('', '', 'xx')", createVarcharType(2), "xx");
-        assertFunction("REPLACE('', '')", createVarcharType(0), "");
-        assertFunction("REPLACE('', '', '')", createVarcharType(0), "");
+        assertFunction("REPLACE('', '')", createEmptyVarcharType(), "");
+        assertFunction("REPLACE('', '', '')", createEmptyVarcharType(), "");
         assertFunction("REPLACE('\u4FE1\u5FF5,\u7231,\u5E0C\u671B', ',', '\u2014')", createVarcharType(15), "\u4FE1\u5FF5\u2014\u7231\u2014\u5E0C\u671B");
         assertFunction("REPLACE('::\uD801\uDC2D::', ':', '')", createVarcharType(5), "\uD801\uDC2D"); //\uD801\uDC2D is one character
         assertFunction("REPLACE('\u00D6sterreich', '\u00D6', 'Oe')", createVarcharType(32), "Oesterreich");
@@ -257,7 +258,7 @@ public class TestStringFunctions
     @Test
     public void testReverse()
     {
-        assertFunction("REVERSE('')", createVarcharType(0), "");
+        assertFunction("REVERSE('')", createEmptyVarcharType(), "");
         assertFunction("REVERSE('hello')", createVarcharType(5), "olleh");
         assertFunction("REVERSE('Quadratically')", createVarcharType(13), "yllacitardauQ");
         assertFunction("REVERSE('racecar')", createVarcharType(7), "racecar");
@@ -510,8 +511,8 @@ public class TestStringFunctions
         assertFunction("SPLIT_PART('abc', 'abc', 3)", createVarcharType(3), null);
         assertFunction("SPLIT_PART('abc', '-@-', 1)", createVarcharType(3), "abc");
         assertFunction("SPLIT_PART('abc', '-@-', 2)", createVarcharType(3), null);
-        assertFunction("SPLIT_PART('', 'abc', 1)", createVarcharType(0), "");
-        assertFunction("SPLIT_PART('', '', 1)", createVarcharType(0), null);
+        assertFunction("SPLIT_PART('', 'abc', 1)", createEmptyVarcharType(), "");
+        assertFunction("SPLIT_PART('', '', 1)", createEmptyVarcharType(), null);
         assertFunction("SPLIT_PART('abc', '', 1)", createVarcharType(3), "a");
         assertFunction("SPLIT_PART('abc', '', 2)", createVarcharType(3), "b");
         assertFunction("SPLIT_PART('abc', '', 3)", createVarcharType(3), "c");
@@ -555,7 +556,7 @@ public class TestStringFunctions
     @Test
     public void testLeftTrim()
     {
-        assertFunction("LTRIM('')", createVarcharType(0), "");
+        assertFunction("LTRIM('')", createEmptyVarcharType(), "");
         assertFunction("LTRIM('   ')", createVarcharType(3), "");
         assertFunction("LTRIM('  hello  ')", createVarcharType(9), "hello  ");
         assertFunction("LTRIM('  hello')", createVarcharType(7), "hello");
@@ -586,7 +587,7 @@ public class TestStringFunctions
     @Test
     public void testRightTrim()
     {
-        assertFunction("RTRIM('')", createVarcharType(0), "");
+        assertFunction("RTRIM('')", createEmptyVarcharType(), "");
         assertFunction("RTRIM('   ')", createVarcharType(3), "");
         assertFunction("RTRIM('  hello  ')", createVarcharType(9), "  hello");
         assertFunction("RTRIM('  hello')", createVarcharType(7), "  hello");
@@ -617,7 +618,7 @@ public class TestStringFunctions
     @Test
     public void testTrim()
     {
-        assertFunction("TRIM('')", createVarcharType(0), "");
+        assertFunction("TRIM('')", createEmptyVarcharType(), "");
         assertFunction("TRIM('   ')", createVarcharType(3), "");
         assertFunction("TRIM('  hello  ')", createVarcharType(9), "hello");
         assertFunction("TRIM('  hello')", createVarcharType(7), "hello");
@@ -650,7 +651,7 @@ public class TestStringFunctions
     @Test
     public void testLeftTrimParametrized()
     {
-        assertFunction("LTRIM('', '')", createVarcharType(0), "");
+        assertFunction("LTRIM('', '')", createEmptyVarcharType(), "");
         assertFunction("LTRIM('   ', '')", createVarcharType(3), "   ");
         assertFunction("LTRIM('  hello  ', '')", createVarcharType(9), "  hello  ");
         assertFunction("LTRIM('  hello  ', ' ')", createVarcharType(9), "hello  ");
@@ -708,7 +709,7 @@ public class TestStringFunctions
     @Test
     public void testRightTrimParametrized()
     {
-        assertFunction("RTRIM('', '')", createVarcharType(0), "");
+        assertFunction("RTRIM('', '')", createEmptyVarcharType(), "");
         assertFunction("RTRIM('   ', '')", createVarcharType(3), "   ");
         assertFunction("RTRIM('  hello  ', '')", createVarcharType(9), "  hello  ");
         assertFunction("RTRIM('  hello  ', ' ')", createVarcharType(9), "  hello");
@@ -757,7 +758,7 @@ public class TestStringFunctions
     @Test
     public void testTrimParametrized()
     {
-        assertFunction("TRIM('', '')", createVarcharType(0), "");
+        assertFunction("TRIM('', '')", createEmptyVarcharType(), "");
         assertFunction("TRIM('   ', '')", createVarcharType(3), "   ");
         assertFunction("TRIM('  hello  ', '')", createVarcharType(9), "  hello  ");
         assertFunction("TRIM('  hello  ', ' ')", createVarcharType(9), "hello");
@@ -815,7 +816,7 @@ public class TestStringFunctions
     @Test
     public void testLower()
     {
-        assertFunction("LOWER('')", createVarcharType(0), "");
+        assertFunction("LOWER('')", createEmptyVarcharType(), "");
         assertFunction("LOWER('Hello World')", createVarcharType(11), "hello world");
         assertFunction("LOWER('WHAT!!')", createVarcharType(6), "what!!");
         assertFunction("LOWER('\u00D6STERREICH')", createVarcharType(10), lowerByCodePoint("\u00D6sterreich"));
@@ -840,7 +841,7 @@ public class TestStringFunctions
     @Test
     public void testUpper()
     {
-        assertFunction("UPPER('')", createVarcharType(0), "");
+        assertFunction("UPPER('')", createEmptyVarcharType(), "");
         assertFunction("UPPER('Hello World')", createVarcharType(11), "HELLO WORLD");
         assertFunction("UPPER('what!!')", createVarcharType(6), "WHAT!!");
         assertFunction("UPPER('\u00D6sterreich')", createVarcharType(10), upperByCodePoint("\u00D6") + "STERREICH");

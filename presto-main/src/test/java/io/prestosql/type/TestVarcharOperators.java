@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 import static io.prestosql.spi.function.OperatorType.INDETERMINATE;
 import static io.prestosql.spi.type.BooleanType.BOOLEAN;
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 
 public class TestVarcharOperators
@@ -29,7 +30,13 @@ public class TestVarcharOperators
     {
         assertFunction("'foo'", createVarcharType(3), "foo");
         assertFunction("'bar'", createVarcharType(3), "bar");
-        assertFunction("''", createVarcharType(0), "");
+        assertFunction("''", createEmptyVarcharType(), "");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testCreateVarcharWithZeroLength()
+    {
+        createVarcharType(0);
     }
 
     @Test

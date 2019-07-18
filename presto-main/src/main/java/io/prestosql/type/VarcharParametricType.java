@@ -61,6 +61,10 @@ public class VarcharParametricType
             throw new IllegalArgumentException("Invalid VARCHAR length " + length);
         }
 
+        if (length == 0) {
+            return VarcharType.createEmptyVarcharType();
+        }
+
         return VarcharType.createVarcharType((int) length);
     }
 }

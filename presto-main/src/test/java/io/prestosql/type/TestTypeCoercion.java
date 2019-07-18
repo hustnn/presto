@@ -38,8 +38,8 @@ import static io.prestosql.spi.type.TinyintType.TINYINT;
 import static io.prestosql.spi.type.TypeSignature.parseTypeSignature;
 import static io.prestosql.spi.type.VarbinaryType.VARBINARY;
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
-import static io.prestosql.spi.type.VarcharType.createVarcharType;
 import static io.prestosql.type.JoniRegexpType.JONI_REGEXP;
 import static io.prestosql.type.JsonPathType.JSON_PATH;
 import static io.prestosql.type.LikePatternType.LIKE_PATTERN;
@@ -254,7 +254,7 @@ public class TestTypeCoercion
         builder.add(createDecimalType(38, 0));
         builder.add(createDecimalType(17, 17));
         builder.add(createDecimalType(38, 38));
-        builder.add(createVarcharType(0));
+        builder.add(createEmptyVarcharType());
         builder.add(createUnboundedVarcharType());
         builder.add(createCharType(0));
         builder.add(createCharType(42));

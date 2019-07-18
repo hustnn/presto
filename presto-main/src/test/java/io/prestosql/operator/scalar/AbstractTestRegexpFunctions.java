@@ -30,6 +30,7 @@ import java.util.List;
 
 import static io.prestosql.spi.StandardErrorCode.INVALID_FUNCTION_ARGUMENT;
 import static io.prestosql.spi.type.BooleanType.BOOLEAN;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 
@@ -229,7 +230,7 @@ public abstract class AbstractTestRegexpFunctions
         assertFunction("REGEXP_SPLIT('a1b2346c3d', '\\d+')", new ArrayType(createVarcharType(10)), ImmutableList.of("a", "b", "c", "d"));
         assertFunction("REGEXP_SPLIT('abcd', 'x')", new ArrayType(createVarcharType(4)), ImmutableList.of("abcd"));
         assertFunction("REGEXP_SPLIT('abcd', '')", new ArrayType(createVarcharType(4)), ImmutableList.of("", "a", "b", "c", "d", ""));
-        assertFunction("REGEXP_SPLIT('', 'x')", new ArrayType(createVarcharType(0)), ImmutableList.of(""));
+        assertFunction("REGEXP_SPLIT('', 'x')", new ArrayType(createEmptyVarcharType()), ImmutableList.of(""));
 
         // test empty splits, leading & trailing empty splits, consecutive empty splits
         assertFunction("REGEXP_SPLIT('a,b,c,d', ',')", new ArrayType(createVarcharType(7)), ImmutableList.of("a", "b", "c", "d"));

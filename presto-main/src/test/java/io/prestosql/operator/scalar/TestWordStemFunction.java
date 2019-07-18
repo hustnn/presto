@@ -15,6 +15,7 @@ package io.prestosql.operator.scalar;
 
 import org.testng.annotations.Test;
 
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 
 public class TestWordStemFunction
@@ -23,7 +24,7 @@ public class TestWordStemFunction
     @Test
     public void testWordStep()
     {
-        assertFunction("word_stem('')", createVarcharType(0), "");
+        assertFunction("word_stem('')", createEmptyVarcharType(), "");
         assertFunction("word_stem('x')", createVarcharType(1), "x");
         assertFunction("word_stem('abc')", createVarcharType(3), "abc");
         assertFunction("word_stem('generally')", createVarcharType(9), "general");

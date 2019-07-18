@@ -65,6 +65,7 @@ import static io.prestosql.spi.type.SmallintType.SMALLINT;
 import static io.prestosql.spi.type.TimestampType.TIMESTAMP;
 import static io.prestosql.spi.type.TinyintType.TINYINT;
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 import static io.prestosql.sql.analyzer.SemanticErrorCode.AMBIGUOUS_FUNCTION_CALL;
 import static io.prestosql.sql.analyzer.SemanticErrorCode.FUNCTION_NOT_FOUND;
@@ -1162,8 +1163,8 @@ public class TestArrayOperators
         assertFunction("ARRAY_INTERSECT(ARRAY [true, true, false, false, NULL], ARRAY [true, false, false, NULL])", new ArrayType(BOOLEAN), asList(true, false, null));
         assertFunction("ARRAY_INTERSECT(ARRAY [false, false], ARRAY [false, false, NULL])", new ArrayType(BOOLEAN), ImmutableList.of(false));
         assertFunction("ARRAY_INTERSECT(ARRAY ['abc'], ARRAY [NULL])", new ArrayType(createVarcharType(3)), ImmutableList.of());
-        assertFunction("ARRAY_INTERSECT(ARRAY [''], ARRAY ['', NULL])", new ArrayType(createVarcharType(0)), ImmutableList.of(""));
-        assertFunction("ARRAY_INTERSECT(ARRAY ['', NULL], ARRAY ['', NULL])", new ArrayType(createVarcharType(0)), asList("", null));
+        assertFunction("ARRAY_INTERSECT(ARRAY [''], ARRAY ['', NULL])", new ArrayType(createEmptyVarcharType()), ImmutableList.of(""));
+        assertFunction("ARRAY_INTERSECT(ARRAY ['', NULL], ARRAY ['', NULL])", new ArrayType(createEmptyVarcharType()), asList("", null));
         assertFunction("ARRAY_INTERSECT(ARRAY [NULL], ARRAY ['abc', NULL])", new ArrayType(createVarcharType(3)), singletonList(null));
         assertFunction("ARRAY_INTERSECT(ARRAY ['abc', NULL, 'xyz', NULL], ARRAY [NULL, 'abc', NULL, NULL])", new ArrayType(createVarcharType(3)), asList("abc", null));
         assertFunction("ARRAY_INTERSECT(ARRAY [], ARRAY [NULL])", new ArrayType(UNKNOWN), ImmutableList.of());

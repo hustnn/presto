@@ -25,6 +25,7 @@ import static io.prestosql.spi.type.BigintType.BIGINT;
 import static io.prestosql.spi.type.BooleanType.BOOLEAN;
 import static io.prestosql.spi.type.DoubleType.DOUBLE;
 import static io.prestosql.spi.type.IntegerType.INTEGER;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 import static io.prestosql.type.UnknownType.UNKNOWN;
 import static java.lang.String.format;
@@ -147,7 +148,7 @@ public class TestArrayCombinationsFunction
                 ImmutableList.of("\u5E0C\u671B", "\u671B")));
 
         assertFunction("combinations(ARRAY[], 2)", new ArrayType(new ArrayType(UNKNOWN)), ImmutableList.of());
-        assertFunction("combinations(ARRAY[''], 2)", new ArrayType(new ArrayType(createVarcharType(0))), ImmutableList.of());
-        assertFunction("combinations(ARRAY['', ''], 2)", new ArrayType(new ArrayType(createVarcharType(0))), ImmutableList.of(ImmutableList.of("", "")));
+        assertFunction("combinations(ARRAY[''], 2)", new ArrayType(new ArrayType(createEmptyVarcharType())), ImmutableList.of());
+        assertFunction("combinations(ARRAY['', ''], 2)", new ArrayType(new ArrayType(createEmptyVarcharType())), ImmutableList.of(ImmutableList.of("", "")));
     }
 }

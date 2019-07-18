@@ -32,18 +32,29 @@ public final class VarcharType
     public static final int UNBOUNDED_LENGTH = Integer.MAX_VALUE;
     public static final int MAX_LENGTH = Integer.MAX_VALUE - 1;
     public static final VarcharType VARCHAR = new VarcharType(UNBOUNDED_LENGTH);
+    public static final VarcharType EMPTY_VARCHAR = new VarcharType(0);
 
     public static VarcharType createUnboundedVarcharType()
     {
         return VARCHAR;
     }
 
+    public static VarcharType createEmptyVarcharType()
+    {
+        return EMPTY_VARCHAR;
+    }
+
     public static VarcharType createVarcharType(int length)
     {
-        if (length > MAX_LENGTH || length < 0) {
+        if (length > MAX_LENGTH) {
             // Use createUnboundedVarcharType for unbounded VARCHAR.
             throw new IllegalArgumentException("Invalid VARCHAR length " + length);
         }
+
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length for type VARCHAR must be at least 1");
+        }
+
         return new VarcharType(length);
     }
 
@@ -62,9 +73,6 @@ public final class VarcharType
                         singletonList(TypeSignatureParameter.of((long) length))),
                 Slice.class);
 
-        if (length < 0) {
-            throw new IllegalArgumentException("Invalid VARCHAR length " + length);
-        }
         this.length = length;
     }
 

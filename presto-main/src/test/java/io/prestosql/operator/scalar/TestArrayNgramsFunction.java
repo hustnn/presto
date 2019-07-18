@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 import static io.prestosql.spi.type.BooleanType.BOOLEAN;
 import static io.prestosql.spi.type.DoubleType.DOUBLE;
 import static io.prestosql.spi.type.IntegerType.INTEGER;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 import static io.prestosql.type.UnknownType.UNKNOWN;
 import static java.util.Arrays.asList;
@@ -96,9 +97,9 @@ public class TestArrayNgramsFunction
 
         assertFunction("ngrams(ARRAY[], 2)", new ArrayType(new ArrayType(UNKNOWN)), ImmutableList.of(
                 asList()));
-        assertFunction("ngrams(ARRAY[''], 2)", new ArrayType(new ArrayType(createVarcharType(0))), ImmutableList.of(
+        assertFunction("ngrams(ARRAY[''], 2)", new ArrayType(new ArrayType(createEmptyVarcharType())), ImmutableList.of(
                 ImmutableList.of("")));
-        assertFunction("ngrams(ARRAY['', ''], 2)", new ArrayType(new ArrayType(createVarcharType(0))), ImmutableList.of(
+        assertFunction("ngrams(ARRAY['', ''], 2)", new ArrayType(new ArrayType(createEmptyVarcharType())), ImmutableList.of(
                 ImmutableList.of("", "")));
 
         assertInvalidFunction("ngrams(ARRAY['foo','bar'], 0)", "N must be positive");

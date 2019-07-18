@@ -242,7 +242,15 @@ public final class SqlToRowExpressionTranslator
         @Override
         protected RowExpression visitStringLiteral(StringLiteral node, Void context)
         {
-            return constant(node.getSlice(), createVarcharType(countCodePoints(node.getSlice())));
+            VarcharType type;
+            int length = countCodePoints(node.getSlice());
+            if (length == 0) {
+                type = VarcharType.createEmptyVarcharType();
+            }
+            else {
+                type = createVarcharType(length);
+            }
+            return constant(node.getSlice(), type);
         }
 
         @Override

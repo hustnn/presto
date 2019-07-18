@@ -684,7 +684,16 @@ public class ExpressionAnalyzer
         @Override
         protected Type visitStringLiteral(StringLiteral node, StackableAstVisitorContext<Context> context)
         {
-            VarcharType type = VarcharType.createVarcharType(SliceUtf8.countCodePoints(node.getSlice()));
+            VarcharType type;
+            int length = SliceUtf8.countCodePoints(node.getSlice());
+            /*if (length == 0) {
+                type = VarcharType.createEmptyVarcharType();
+            }
+            else {
+                type = VarcharType.createVarcharType(length);
+            }*/
+            type = VarcharType.createVarcharType(length);
+
             return setExpressionType(node, type);
         }
 

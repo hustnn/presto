@@ -44,6 +44,7 @@ import static io.prestosql.spi.type.SmallintType.SMALLINT;
 import static io.prestosql.spi.type.TimeWithTimeZoneType.TIME_WITH_TIME_ZONE;
 import static io.prestosql.spi.type.TimestampType.TIMESTAMP;
 import static io.prestosql.spi.type.TimestampWithTimeZoneType.TIMESTAMP_WITH_TIME_ZONE;
+import static io.prestosql.spi.type.VarcharType.createEmptyVarcharType;
 import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
 import static io.prestosql.spi.type.VarcharType.createVarcharType;
 import static io.prestosql.type.CodePointsType.CODE_POINTS;
@@ -291,7 +292,7 @@ public final class TypeCoercion
                     case CodePointsType.NAME:
                         return Optional.of(lookupType.apply(new TypeSignature(resultTypeBase)));
                     case StandardTypes.VARCHAR:
-                        return Optional.of(createVarcharType(0));
+                        return Optional.of(createEmptyVarcharType());
                     case StandardTypes.CHAR:
                         return Optional.of(createCharType(0));
                     case StandardTypes.DECIMAL:
